@@ -1,0 +1,35 @@
+{
+  "name": "connectms",
+  "version": "1.0.0",
+  "description": "A simple SMS management application API",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node src/index.js --exec babel-node",
+    "dev-start": "nodemon --exec babel-node src/index.js",
+    "build": "babel src --out-dir dist",
+    "serve": "node dist/index.js",
+    "lint" : "./node_modules/.bin/eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JCanaks/ConnectMS.git"
+  },
+  "author": "Jane C. Anaekwe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JCanaks/ConnectMS/issues"
+  },
+  "homepage": "https://github.com/JCanaks/ConnectMS#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/node": "^7.5.0",
+    "@babel/preset-env": "^7.5.4",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
+    "nodemon": "^1.19.1"
+  }
+}
