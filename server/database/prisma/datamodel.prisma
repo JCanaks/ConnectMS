@@ -1,0 +1,16 @@
+type Contact {
+    id: ID! @id
+    name: String!
+    phonenumber: String! @unique
+    sentMessages: [SMS!]! @relation(name: "SentMessages")
+    recievedMessages: [SMS!]! @relation(name: "RecievedMessages")
+}
+
+type SMS {
+    id: ID! @id
+    sender: Contact @relation(name: "SentMessages")
+    reciever: Contact @relation(name: "RecievedMessages")
+    message: String!
+    status: String!
+    createdAt: DateTime! @createdAt 
+}
