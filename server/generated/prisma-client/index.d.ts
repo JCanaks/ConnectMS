@@ -155,25 +155,28 @@ export type ContactOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
-  | "phonenumber_ASC"
-  | "phonenumber_DESC";
+  | "phoneNumber_ASC"
+  | "phoneNumber_DESC"
+  | "password_ASC"
+  | "password_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface ContactUpdateInput {
   name?: Maybe<String>;
-  phonenumber?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  password?: Maybe<String>;
   sentMessages?: Maybe<SMSUpdateManyWithoutSenderInput>;
   recievedMessages?: Maybe<SMSUpdateManyWithoutRecieverInput>;
 }
 
 export type ContactWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  phonenumber?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
 }>;
 
 export interface SMSUpdateWithoutSenderDataInput {
-  reciever?: Maybe<ContactUpdateOneWithoutRecievedMessagesInput>;
+  reciever?: Maybe<ContactUpdateOneRequiredWithoutRecievedMessagesInput>;
   message?: Maybe<String>;
   status?: Maybe<String>;
 }
@@ -207,20 +210,34 @@ export interface ContactWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  phonenumber?: Maybe<String>;
-  phonenumber_not?: Maybe<String>;
-  phonenumber_in?: Maybe<String[] | String>;
-  phonenumber_not_in?: Maybe<String[] | String>;
-  phonenumber_lt?: Maybe<String>;
-  phonenumber_lte?: Maybe<String>;
-  phonenumber_gt?: Maybe<String>;
-  phonenumber_gte?: Maybe<String>;
-  phonenumber_contains?: Maybe<String>;
-  phonenumber_not_contains?: Maybe<String>;
-  phonenumber_starts_with?: Maybe<String>;
-  phonenumber_not_starts_with?: Maybe<String>;
-  phonenumber_ends_with?: Maybe<String>;
-  phonenumber_not_ends_with?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  phoneNumber_not?: Maybe<String>;
+  phoneNumber_in?: Maybe<String[] | String>;
+  phoneNumber_not_in?: Maybe<String[] | String>;
+  phoneNumber_lt?: Maybe<String>;
+  phoneNumber_lte?: Maybe<String>;
+  phoneNumber_gt?: Maybe<String>;
+  phoneNumber_gte?: Maybe<String>;
+  phoneNumber_contains?: Maybe<String>;
+  phoneNumber_not_contains?: Maybe<String>;
+  phoneNumber_starts_with?: Maybe<String>;
+  phoneNumber_not_starts_with?: Maybe<String>;
+  phoneNumber_ends_with?: Maybe<String>;
+  phoneNumber_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
   sentMessages_every?: Maybe<SMSWhereInput>;
   sentMessages_some?: Maybe<SMSWhereInput>;
   sentMessages_none?: Maybe<SMSWhereInput>;
@@ -232,12 +249,10 @@ export interface ContactWhereInput {
   NOT?: Maybe<ContactWhereInput[] | ContactWhereInput>;
 }
 
-export interface ContactUpdateOneWithoutRecievedMessagesInput {
+export interface ContactUpdateOneRequiredWithoutRecievedMessagesInput {
   create?: Maybe<ContactCreateWithoutRecievedMessagesInput>;
   update?: Maybe<ContactUpdateWithoutRecievedMessagesDataInput>;
   upsert?: Maybe<ContactUpsertWithoutRecievedMessagesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<ContactWhereUniqueInput>;
 }
 
@@ -330,14 +345,15 @@ export interface SMSUpdateManyWithoutRecieverInput {
 
 export interface SMSCreateWithoutRecieverInput {
   id?: Maybe<ID_Input>;
-  sender?: Maybe<ContactCreateOneWithoutSentMessagesInput>;
+  sender: ContactCreateOneWithoutSentMessagesInput;
   message: String;
   status: String;
 }
 
 export interface ContactUpdateWithoutRecievedMessagesDataInput {
   name?: Maybe<String>;
-  phonenumber?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  password?: Maybe<String>;
   sentMessages?: Maybe<SMSUpdateManyWithoutSenderInput>;
 }
 
@@ -360,20 +376,22 @@ export interface ContactSubscriptionWhereInput {
 export interface ContactCreateWithoutSentMessagesInput {
   id?: Maybe<ID_Input>;
   name: String;
-  phonenumber: String;
+  phoneNumber: String;
+  password: String;
   recievedMessages?: Maybe<SMSCreateManyWithoutRecieverInput>;
 }
 
 export interface SMSUpdateInput {
-  sender?: Maybe<ContactUpdateOneWithoutSentMessagesInput>;
-  reciever?: Maybe<ContactUpdateOneWithoutRecievedMessagesInput>;
+  sender?: Maybe<ContactUpdateOneRequiredWithoutSentMessagesInput>;
+  reciever?: Maybe<ContactUpdateOneRequiredWithoutRecievedMessagesInput>;
   message?: Maybe<String>;
   status?: Maybe<String>;
 }
 
 export interface ContactUpdateWithoutSentMessagesDataInput {
   name?: Maybe<String>;
-  phonenumber?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  password?: Maybe<String>;
   recievedMessages?: Maybe<SMSUpdateManyWithoutRecieverInput>;
 }
 
@@ -417,12 +435,10 @@ export interface SMSCreateManyWithoutSenderInput {
   connect?: Maybe<SMSWhereUniqueInput[] | SMSWhereUniqueInput>;
 }
 
-export interface ContactUpdateOneWithoutSentMessagesInput {
+export interface ContactUpdateOneRequiredWithoutSentMessagesInput {
   create?: Maybe<ContactCreateWithoutSentMessagesInput>;
   update?: Maybe<ContactUpdateWithoutSentMessagesDataInput>;
   upsert?: Maybe<ContactUpsertWithoutSentMessagesInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<ContactWhereUniqueInput>;
 }
 
@@ -432,7 +448,7 @@ export interface ContactCreateOneWithoutRecievedMessagesInput {
 }
 
 export interface SMSUpdateWithoutRecieverDataInput {
-  sender?: Maybe<ContactUpdateOneWithoutSentMessagesInput>;
+  sender?: Maybe<ContactUpdateOneRequiredWithoutSentMessagesInput>;
   message?: Maybe<String>;
   status?: Maybe<String>;
 }
@@ -455,8 +471,8 @@ export interface SMSUpdateWithWhereUniqueWithoutRecieverInput {
 
 export interface SMSCreateInput {
   id?: Maybe<ID_Input>;
-  sender?: Maybe<ContactCreateOneWithoutSentMessagesInput>;
-  reciever?: Maybe<ContactCreateOneWithoutRecievedMessagesInput>;
+  sender: ContactCreateOneWithoutSentMessagesInput;
+  reciever: ContactCreateOneWithoutRecievedMessagesInput;
   message: String;
   status: String;
 }
@@ -546,14 +562,16 @@ export interface SMSUpsertWithWhereUniqueWithoutSenderInput {
 export interface ContactCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
-  phonenumber: String;
+  phoneNumber: String;
+  password: String;
   sentMessages?: Maybe<SMSCreateManyWithoutSenderInput>;
   recievedMessages?: Maybe<SMSCreateManyWithoutRecieverInput>;
 }
 
 export interface ContactUpdateManyMutationInput {
   name?: Maybe<String>;
-  phonenumber?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  password?: Maybe<String>;
 }
 
 export interface SMSUpdateManyMutationInput {
@@ -564,13 +582,14 @@ export interface SMSUpdateManyMutationInput {
 export interface ContactCreateWithoutRecievedMessagesInput {
   id?: Maybe<ID_Input>;
   name: String;
-  phonenumber: String;
+  phoneNumber: String;
+  password: String;
   sentMessages?: Maybe<SMSCreateManyWithoutSenderInput>;
 }
 
 export interface SMSCreateWithoutSenderInput {
   id?: Maybe<ID_Input>;
-  reciever?: Maybe<ContactCreateOneWithoutRecievedMessagesInput>;
+  reciever: ContactCreateOneWithoutRecievedMessagesInput;
   message: String;
   status: String;
 }
@@ -676,13 +695,15 @@ export interface ContactEdgeSubscription
 export interface Contact {
   id: ID_Output;
   name: String;
-  phonenumber: String;
+  phoneNumber: String;
+  password: String;
 }
 
 export interface ContactPromise extends Promise<Contact>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  phonenumber: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
+  password: () => Promise<String>;
   sentMessages: <T = FragmentableArray<SMS>>(args?: {
     where?: SMSWhereInput;
     orderBy?: SMSOrderByInput;
@@ -708,7 +729,8 @@ export interface ContactSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  phonenumber: () => Promise<AsyncIterator<String>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   sentMessages: <T = Promise<AsyncIterator<SMSSubscription>>>(args?: {
     where?: SMSWhereInput;
     orderBy?: SMSOrderByInput;
@@ -734,7 +756,8 @@ export interface ContactNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  phonenumber: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
+  password: () => Promise<String>;
   sentMessages: <T = FragmentableArray<SMS>>(args?: {
     where?: SMSWhereInput;
     orderBy?: SMSOrderByInput;
@@ -823,7 +846,8 @@ export interface SMSEdgeSubscription
 export interface ContactPreviousValues {
   id: ID_Output;
   name: String;
-  phonenumber: String;
+  phoneNumber: String;
+  password: String;
 }
 
 export interface ContactPreviousValuesPromise
@@ -831,7 +855,8 @@ export interface ContactPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  phonenumber: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
+  password: () => Promise<String>;
 }
 
 export interface ContactPreviousValuesSubscription
@@ -839,7 +864,8 @@ export interface ContactPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  phonenumber: () => Promise<AsyncIterator<String>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ContactConnection {

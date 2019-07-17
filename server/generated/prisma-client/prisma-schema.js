@@ -18,7 +18,8 @@ type BatchPayload {
 type Contact {
   id: ID!
   name: String!
-  phonenumber: String!
+  phoneNumber: String!
+  password: String!
   sentMessages(where: SMSWhereInput, orderBy: SMSOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SMS!]
   recievedMessages(where: SMSWhereInput, orderBy: SMSOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SMS!]
 }
@@ -32,7 +33,8 @@ type ContactConnection {
 input ContactCreateInput {
   id: ID
   name: String!
-  phonenumber: String!
+  phoneNumber: String!
+  password: String!
   sentMessages: SMSCreateManyWithoutSenderInput
   recievedMessages: SMSCreateManyWithoutRecieverInput
 }
@@ -50,14 +52,16 @@ input ContactCreateOneWithoutSentMessagesInput {
 input ContactCreateWithoutRecievedMessagesInput {
   id: ID
   name: String!
-  phonenumber: String!
+  phoneNumber: String!
+  password: String!
   sentMessages: SMSCreateManyWithoutSenderInput
 }
 
 input ContactCreateWithoutSentMessagesInput {
   id: ID
   name: String!
-  phonenumber: String!
+  phoneNumber: String!
+  password: String!
   recievedMessages: SMSCreateManyWithoutRecieverInput
 }
 
@@ -71,14 +75,17 @@ enum ContactOrderByInput {
   id_DESC
   name_ASC
   name_DESC
-  phonenumber_ASC
-  phonenumber_DESC
+  phoneNumber_ASC
+  phoneNumber_DESC
+  password_ASC
+  password_DESC
 }
 
 type ContactPreviousValues {
   id: ID!
   name: String!
-  phonenumber: String!
+  phoneNumber: String!
+  password: String!
 }
 
 type ContactSubscriptionPayload {
@@ -101,43 +108,43 @@ input ContactSubscriptionWhereInput {
 
 input ContactUpdateInput {
   name: String
-  phonenumber: String
+  phoneNumber: String
+  password: String
   sentMessages: SMSUpdateManyWithoutSenderInput
   recievedMessages: SMSUpdateManyWithoutRecieverInput
 }
 
 input ContactUpdateManyMutationInput {
   name: String
-  phonenumber: String
+  phoneNumber: String
+  password: String
 }
 
-input ContactUpdateOneWithoutRecievedMessagesInput {
+input ContactUpdateOneRequiredWithoutRecievedMessagesInput {
   create: ContactCreateWithoutRecievedMessagesInput
   update: ContactUpdateWithoutRecievedMessagesDataInput
   upsert: ContactUpsertWithoutRecievedMessagesInput
-  delete: Boolean
-  disconnect: Boolean
   connect: ContactWhereUniqueInput
 }
 
-input ContactUpdateOneWithoutSentMessagesInput {
+input ContactUpdateOneRequiredWithoutSentMessagesInput {
   create: ContactCreateWithoutSentMessagesInput
   update: ContactUpdateWithoutSentMessagesDataInput
   upsert: ContactUpsertWithoutSentMessagesInput
-  delete: Boolean
-  disconnect: Boolean
   connect: ContactWhereUniqueInput
 }
 
 input ContactUpdateWithoutRecievedMessagesDataInput {
   name: String
-  phonenumber: String
+  phoneNumber: String
+  password: String
   sentMessages: SMSUpdateManyWithoutSenderInput
 }
 
 input ContactUpdateWithoutSentMessagesDataInput {
   name: String
-  phonenumber: String
+  phoneNumber: String
+  password: String
   recievedMessages: SMSUpdateManyWithoutRecieverInput
 }
 
@@ -180,20 +187,34 @@ input ContactWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  phonenumber: String
-  phonenumber_not: String
-  phonenumber_in: [String!]
-  phonenumber_not_in: [String!]
-  phonenumber_lt: String
-  phonenumber_lte: String
-  phonenumber_gt: String
-  phonenumber_gte: String
-  phonenumber_contains: String
-  phonenumber_not_contains: String
-  phonenumber_starts_with: String
-  phonenumber_not_starts_with: String
-  phonenumber_ends_with: String
-  phonenumber_not_ends_with: String
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   sentMessages_every: SMSWhereInput
   sentMessages_some: SMSWhereInput
   sentMessages_none: SMSWhereInput
@@ -207,7 +228,7 @@ input ContactWhereInput {
 
 input ContactWhereUniqueInput {
   id: ID
-  phonenumber: String
+  phoneNumber: String
 }
 
 scalar DateTime
@@ -258,8 +279,8 @@ type Query {
 
 type SMS {
   id: ID!
-  sender: Contact
-  reciever: Contact
+  sender: Contact!
+  reciever: Contact!
   message: String!
   status: String!
   createdAt: DateTime!
@@ -273,8 +294,8 @@ type SMSConnection {
 
 input SMSCreateInput {
   id: ID
-  sender: ContactCreateOneWithoutSentMessagesInput
-  reciever: ContactCreateOneWithoutRecievedMessagesInput
+  sender: ContactCreateOneWithoutSentMessagesInput!
+  reciever: ContactCreateOneWithoutRecievedMessagesInput!
   message: String!
   status: String!
 }
@@ -291,14 +312,14 @@ input SMSCreateManyWithoutSenderInput {
 
 input SMSCreateWithoutRecieverInput {
   id: ID
-  sender: ContactCreateOneWithoutSentMessagesInput
+  sender: ContactCreateOneWithoutSentMessagesInput!
   message: String!
   status: String!
 }
 
 input SMSCreateWithoutSenderInput {
   id: ID
-  reciever: ContactCreateOneWithoutRecievedMessagesInput
+  reciever: ContactCreateOneWithoutRecievedMessagesInput!
   message: String!
   status: String!
 }
@@ -401,8 +422,8 @@ input SMSSubscriptionWhereInput {
 }
 
 input SMSUpdateInput {
-  sender: ContactUpdateOneWithoutSentMessagesInput
-  reciever: ContactUpdateOneWithoutRecievedMessagesInput
+  sender: ContactUpdateOneRequiredWithoutSentMessagesInput
+  reciever: ContactUpdateOneRequiredWithoutRecievedMessagesInput
   message: String
   status: String
 }
@@ -447,13 +468,13 @@ input SMSUpdateManyWithWhereNestedInput {
 }
 
 input SMSUpdateWithoutRecieverDataInput {
-  sender: ContactUpdateOneWithoutSentMessagesInput
+  sender: ContactUpdateOneRequiredWithoutSentMessagesInput
   message: String
   status: String
 }
 
 input SMSUpdateWithoutSenderDataInput {
-  reciever: ContactUpdateOneWithoutRecievedMessagesInput
+  reciever: ContactUpdateOneRequiredWithoutRecievedMessagesInput
   message: String
   status: String
 }

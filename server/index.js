@@ -1,24 +1,20 @@
 import { GraphQLServer } from 'graphql-yoga';
+import gql from 'graphql-tag';
+import { merge } from 'lodash';
+import { prisma } from './generated/prisma-client';
+import { typeDef as Auth, resolvers as authResolvers } from './schemas/Auth';
+import { typeDef as Contact } from './schemas/Contact';
+import { typeDef as Sms } from './schemas/Sms';
 
-const typeDefs = `
+
+const Query = gql`
 type Query {
     info: String!
-  }
+  }`;
 
-type Contact {
-    id: ID!
-    name: String!
-    phonenumber: String!
-    sentMessages: [SMS!]!
-    recievedMessages: [SMS!]!
-}
-
-type SMS {
-    id: ID!
-    sender: Contact
-    reciever: Contact
-    message: String!
-    status: String!
+const Mutation = gql`
+type Mutation {
+  _empty: String,
 }`;
 
 const resolvers = {
@@ -28,7 +24,11 @@ const resolvers = {
 };
 
 const server = new GraphQLServer({
-  typeDefs,
-  resolvers,
+  typeDefs: [Query, Mutation, Auth, Contact, Sms],
+  resolvers: merge(resolvers, authResolvers),
+  context: request => ({
+    ...request,
+    prisma,
+  }),
 });
 server.start(() => console.log('Server is running on http://localhost:4000'));
