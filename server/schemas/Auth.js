@@ -17,7 +17,7 @@ type AuthPayload {
 
 export const resolvers = {
   Mutation: {
-    signup: async (parent, args, context, info) => {
+    signup: async (parent, args, context) => {
       const password = await bcrypt.hash(args.password, 10);
       const user = await context.prisma.createContact({ ...args, password });
       const token = jwt.sign({ userId: user.id }, APP_SECRET, { expiresIn: '3h' });
@@ -27,7 +27,7 @@ export const resolvers = {
         user,
       };
     },
-    login: async (parent, args, context, info) => {
+    login: async (parent, args, context) => {
       const user = await context.prisma.contact({ phoneNumber: args.phoneNumber });
 
       if (!user) {
