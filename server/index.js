@@ -3,16 +3,16 @@ import gql from 'graphql-tag';
 import { merge } from 'lodash';
 import { prisma } from './generated/prisma-client';
 import { typeDef as Auth, resolvers as authResolvers } from './schemas/Auth';
-import { typeDef as Contact } from './schemas/Contact';
+import { typeDef as Contact, middleware as contactMiddleware } from './schemas/Contact';
 import { typeDef as Sms } from './schemas/Sms';
 
 
-const Query = gql`
+const Query = `
 type Query {
     info: String!
   }`;
 
-const Mutation = gql`
+const Mutation = `
 type Mutation {
   _empty: String,
 }`;
@@ -23,6 +23,8 @@ const resolvers = {
   },
 };
 
+const middlewares = [contactMiddleware];
+
 const server = new GraphQLServer({
   typeDefs: [Query, Mutation, Auth, Contact, Sms],
   resolvers: merge(resolvers, authResolvers),
@@ -30,5 +32,6 @@ const server = new GraphQLServer({
     ...request,
     prisma,
   }),
+  middlewares,
 });
 server.start(() => console.log('Server is running on http://localhost:4000'));
