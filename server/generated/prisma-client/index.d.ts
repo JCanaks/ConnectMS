@@ -176,7 +176,7 @@ export type ContactWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface SMSUpdateWithoutSenderDataInput {
-  reciever?: Maybe<ContactUpdateOneRequiredWithoutRecievedMessagesInput>;
+  reciever?: Maybe<ContactUpdateOneWithoutRecievedMessagesInput>;
   message?: Maybe<String>;
   status?: Maybe<String>;
 }
@@ -249,10 +249,12 @@ export interface ContactWhereInput {
   NOT?: Maybe<ContactWhereInput[] | ContactWhereInput>;
 }
 
-export interface ContactUpdateOneRequiredWithoutRecievedMessagesInput {
+export interface ContactUpdateOneWithoutRecievedMessagesInput {
   create?: Maybe<ContactCreateWithoutRecievedMessagesInput>;
   update?: Maybe<ContactUpdateWithoutRecievedMessagesDataInput>;
   upsert?: Maybe<ContactUpsertWithoutRecievedMessagesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<ContactWhereUniqueInput>;
 }
 
@@ -383,7 +385,7 @@ export interface ContactCreateWithoutSentMessagesInput {
 
 export interface SMSUpdateInput {
   sender?: Maybe<ContactUpdateOneRequiredWithoutSentMessagesInput>;
-  reciever?: Maybe<ContactUpdateOneRequiredWithoutRecievedMessagesInput>;
+  reciever?: Maybe<ContactUpdateOneWithoutRecievedMessagesInput>;
   message?: Maybe<String>;
   status?: Maybe<String>;
 }
@@ -472,7 +474,7 @@ export interface SMSUpdateWithWhereUniqueWithoutRecieverInput {
 export interface SMSCreateInput {
   id?: Maybe<ID_Input>;
   sender: ContactCreateOneWithoutSentMessagesInput;
-  reciever: ContactCreateOneWithoutRecievedMessagesInput;
+  reciever?: Maybe<ContactCreateOneWithoutRecievedMessagesInput>;
   message: String;
   status: String;
 }
@@ -589,7 +591,7 @@ export interface ContactCreateWithoutRecievedMessagesInput {
 
 export interface SMSCreateWithoutSenderInput {
   id?: Maybe<ID_Input>;
-  reciever: ContactCreateOneWithoutRecievedMessagesInput;
+  reciever?: Maybe<ContactCreateOneWithoutRecievedMessagesInput>;
   message: String;
   status: String;
 }

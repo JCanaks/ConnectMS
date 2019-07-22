@@ -120,17 +120,19 @@ input ContactUpdateManyMutationInput {
   password: String
 }
 
-input ContactUpdateOneRequiredWithoutRecievedMessagesInput {
-  create: ContactCreateWithoutRecievedMessagesInput
-  update: ContactUpdateWithoutRecievedMessagesDataInput
-  upsert: ContactUpsertWithoutRecievedMessagesInput
-  connect: ContactWhereUniqueInput
-}
-
 input ContactUpdateOneRequiredWithoutSentMessagesInput {
   create: ContactCreateWithoutSentMessagesInput
   update: ContactUpdateWithoutSentMessagesDataInput
   upsert: ContactUpsertWithoutSentMessagesInput
+  connect: ContactWhereUniqueInput
+}
+
+input ContactUpdateOneWithoutRecievedMessagesInput {
+  create: ContactCreateWithoutRecievedMessagesInput
+  update: ContactUpdateWithoutRecievedMessagesDataInput
+  upsert: ContactUpsertWithoutRecievedMessagesInput
+  delete: Boolean
+  disconnect: Boolean
   connect: ContactWhereUniqueInput
 }
 
@@ -280,7 +282,7 @@ type Query {
 type SMS {
   id: ID!
   sender: Contact!
-  reciever: Contact!
+  reciever: Contact
   message: String!
   status: String!
   createdAt: DateTime!
@@ -295,7 +297,7 @@ type SMSConnection {
 input SMSCreateInput {
   id: ID
   sender: ContactCreateOneWithoutSentMessagesInput!
-  reciever: ContactCreateOneWithoutRecievedMessagesInput!
+  reciever: ContactCreateOneWithoutRecievedMessagesInput
   message: String!
   status: String!
 }
@@ -319,7 +321,7 @@ input SMSCreateWithoutRecieverInput {
 
 input SMSCreateWithoutSenderInput {
   id: ID
-  reciever: ContactCreateOneWithoutRecievedMessagesInput!
+  reciever: ContactCreateOneWithoutRecievedMessagesInput
   message: String!
   status: String!
 }
@@ -423,7 +425,7 @@ input SMSSubscriptionWhereInput {
 
 input SMSUpdateInput {
   sender: ContactUpdateOneRequiredWithoutSentMessagesInput
-  reciever: ContactUpdateOneRequiredWithoutRecievedMessagesInput
+  reciever: ContactUpdateOneWithoutRecievedMessagesInput
   message: String
   status: String
 }
@@ -474,7 +476,7 @@ input SMSUpdateWithoutRecieverDataInput {
 }
 
 input SMSUpdateWithoutSenderDataInput {
-  reciever: ContactUpdateOneRequiredWithoutRecievedMessagesInput
+  reciever: ContactUpdateOneWithoutRecievedMessagesInput
   message: String
   status: String
 }

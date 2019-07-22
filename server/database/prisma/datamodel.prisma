@@ -4,13 +4,13 @@ type Contact {
     phoneNumber: String! @unique
     password: String!
     sentMessages: [SMS] @relation(name: "SentMessages", onDelete: CASCADE)
-    recievedMessages: [SMS] @relation(name: "RecievedMessages" , onDelete: CASCADE)
+    recievedMessages: [SMS] @relation(name: "RecievedMessages")
 }
 
 type SMS {
     id: ID! @id
     sender: Contact! @relation(name: "SentMessages")
-    reciever: Contact! @relation(name: "RecievedMessages")
+    reciever: Contact @relation(name: "RecievedMessages")
     message: String!
     status: String!
     createdAt: DateTime! @createdAt 
