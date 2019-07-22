@@ -3,7 +3,7 @@ import { merge } from 'lodash';
 import { prisma } from './generated/prisma-client';
 import { typeDef as Auth, resolvers as authResolvers } from './schemas/Auth';
 import { typeDef as Contact, resolvers as contactResolvers, middleware as contactMiddleware } from './schemas/Contact';
-import { typeDef as Sms } from './schemas/Sms';
+import { typeDef as Sms, resolvers as smsResolvers, middleware as smsMiddleware } from './schemas/Sms';
 
 
 const Query = `
@@ -22,11 +22,11 @@ const resolvers = {
   },
 };
 
-const middlewares = [contactMiddleware];
+const middlewares = [contactMiddleware, smsMiddleware];
 
 const server = new GraphQLServer({
   typeDefs: [Query, Mutation, Auth, Contact, Sms],
-  resolvers: merge(resolvers, authResolvers, contactResolvers),
+  resolvers: merge(resolvers, authResolvers, contactResolvers, smsResolvers),
   context: request => ({
     ...request,
     prisma,

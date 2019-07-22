@@ -8,8 +8,11 @@ const authenticateUser = async (resolve, parent, args, context, info) => {
 
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
-    const { userId } = jwt.verify(token, APP_SECRET);
-    context.userId = userId;
+    const { userId, phoneNumber } = jwt.verify(token, APP_SECRET);
+    context.userInfo = {
+      userId,
+      phoneNumber,
+    };
     const result = await resolve(parent, args, context, info);
     return result;
   }

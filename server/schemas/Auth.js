@@ -20,7 +20,10 @@ export const resolvers = {
     signup: async (parent, args, context) => {
       const password = await bcrypt.hash(args.password, 10);
       const user = await context.prisma.createContact({ ...args, password });
-      const token = jwt.sign({ userId: user.id }, APP_SECRET, { expiresIn: '3h' });
+      const token = jwt.sign({
+        userId: user.id,
+        phoneNumber: user.phoneNumber,
+      }, APP_SECRET, { expiresIn: '3h' });
 
       return {
         token,
@@ -39,7 +42,10 @@ export const resolvers = {
         throw new Error('Invalid Password');
       }
 
-      const token = jwt.sign({ userId: user.id }, APP_SECRET, { expiresIn: '3h' });
+      const token = jwt.sign({
+        userId: user.id,
+        phoneNumber: user.phoneNumber, 
+      }, APP_SECRET, { expiresIn: '3h' });
 
       return {
         token,

@@ -6,14 +6,14 @@ extend type Query {
     contact(phoneNumber: String!): Contact
 }
 
-extend type Mutation {
-    updateContact(id: ID!, name: String, phoneNumber: String): Contact
-    deleteContact(phoneNumber: String!): Contact
-}
-
 type ContactList {
     contacts: [Contact!]!
     count: Int!
+}
+
+extend type Mutation {
+    updateContact(id: ID!, name: String, phoneNumber: String): Contact
+    deleteContact(phoneNumber: String!): Contact
 }
 
 type Contact {
@@ -32,8 +32,8 @@ export const resolvers = {
       const count = await context.prisma.contactsConnection().aggregate().count();
 
       return {
-        contacts,
         count,
+        contacts,
       };
     },
     contact: (parent, args, context) => context.prisma.contact({
@@ -58,6 +58,22 @@ export const resolvers = {
     },
     deleteContact: (parent, args, context) => context.prisma.deleteContact({
       phoneNumber: args.phoneNumber,
+    }),
+  },
+  Contact: {
+    sentMessages: async (parent, args, context) => context.prisma.sMses({
+      where: {
+        sender: await context.prisma.contact({
+          id: parent.id,
+        }),
+      },
+    }),
+    recievedMessages: async (parent, args, context) => context.prisma.sMses({
+      where: {
+        reciever: await context.prisma.contact({
+          id: parent.id,
+        }),
+      },
     }),
   },
 };
