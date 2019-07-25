@@ -9,6 +9,8 @@ const authenticateUser = async (resolve, parent, args, context, info) => {
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
     const { userId, phoneNumber } = jwt.verify(token, APP_SECRET);
+
+    // eslint-disable-next-line no-param-reassign
     context.userInfo = {
       userId,
       phoneNumber,

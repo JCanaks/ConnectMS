@@ -1,4 +1,5 @@
 import authenticateUser from '../utils/middleware/authMiddleware';
+import smsValidation from '../utils/middleware/validators/sms';
 
 export const typeDef = `
 extend type Query {
@@ -12,7 +13,7 @@ type SMSList {
 }
 
 extend type Mutation {
-    createSMS(reciever: String!, message: String!): SMS
+    createSMS(recieverPhoneNumber: String!, message: String!): SMS
     deleteSMS(id: ID!): SMS
 }
 
@@ -39,7 +40,7 @@ export const resolvers = {
   },
   Mutation: {
     createSMS: (parent, args, context) => context.prisma.createSMS({
-      reciever: { connect: { phoneNumber: args.reciever } },
+      reciever: { connect: { phoneNumber: args.recieverPhoneNumber } },
       sender: { connect: { phoneNumber: context.userInfo.phoneNumber } },
       message: args.message,
       status: 'SENT',
@@ -58,13 +59,23 @@ export const resolvers = {
     }).reciever(),
   },
 };
-export const middleware = {
+export const smsAuthMiddleware = {
   Query: {
     allSMS: authenticateUser,
     sms: authenticateUser,
   },
   Mutation: {
-    deleteSMS: authenticateUser,
     createSMS: authenticateUser,
+    deleteSMS: authenticateUser,
+  },
+};
+
+export const smsValidationMiddleware = {
+  Query: {
+    sms: smsValidation.getSingleSms,
+  },
+  Mutation: {
+    createSMS: smsValidation.createSms,
+    deleteSMS: smsValidation.deleteSms,
   },
 };

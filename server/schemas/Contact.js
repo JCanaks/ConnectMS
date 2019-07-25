@@ -1,4 +1,5 @@
 import authenticateUser from '../utils/middleware/authMiddleware';
+import contactValidation from '../utils/middleware/validators/contact';
 
 export const typeDef = `
 extend type Query {
@@ -78,7 +79,7 @@ export const resolvers = {
   },
 };
 
-export const middleware = {
+export const contactAuthmiddleware = {
   Query: {
     allContacts: authenticateUser,
     contact: authenticateUser,
@@ -86,5 +87,15 @@ export const middleware = {
   Mutation: {
     updateContact: authenticateUser,
     deleteContact: authenticateUser,
+  },
+};
+
+export const contactValidationMiddleware = {
+  Query: {
+    contact: contactValidation.getSingleContact,
+  },
+  Mutation: {
+    updateContact: contactValidation.updateContact,
+    deleteContact: contactValidation.deleteContact,
   },
 };
