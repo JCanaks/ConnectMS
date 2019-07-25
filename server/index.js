@@ -1,9 +1,15 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { merge } from 'lodash';
 import { prisma } from './generated/prisma-client';
-import { typeDef as Auth, resolvers as authResolvers } from './schemas/Auth';
-import { typeDef as Contact, resolvers as contactResolvers, middleware as contactMiddleware } from './schemas/Contact';
-import { typeDef as Sms, resolvers as smsResolvers, middleware as smsMiddleware } from './schemas/Sms';
+import { typeDef as Auth, resolvers as authResolvers, authValidationMiddleware } from './schemas/auth';
+import {
+  typeDef as Contact, resolvers as contactResolvers,
+  contactAuthmiddleware, contactValidationMiddleware,
+} from './schemas/contact';
+import {
+  typeDef as Sms, resolvers as smsResolvers,
+  smsAuthMiddleware, smsValidationMiddleware,
+} from './schemas/sms';
 
 
 const Query = `
@@ -22,7 +28,8 @@ const resolvers = {
   },
 };
 
-const middlewares = [contactMiddleware, smsMiddleware];
+const middlewares = [contactAuthmiddleware, smsAuthMiddleware,
+  authValidationMiddleware, contactValidationMiddleware, smsValidationMiddleware];
 
 const server = new GraphQLServer({
   typeDefs: [Query, Mutation, Auth, Contact, Sms],

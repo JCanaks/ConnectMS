@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import 'dotenv/config';
+import authValidation from '../utils/middleware/validators/auth';
 
 const { APP_SECRET } = process.env;
 
@@ -44,7 +45,7 @@ export const resolvers = {
 
       const token = jwt.sign({
         userId: user.id,
-        phoneNumber: user.phoneNumber, 
+        phoneNumber: user.phoneNumber,
       }, APP_SECRET, { expiresIn: '3h' });
 
       return {
@@ -52,5 +53,12 @@ export const resolvers = {
         user,
       };
     },
+  },
+};
+
+export const authValidationMiddleware = {
+  Mutation: {
+    signup: authValidation.signup,
+    login: authValidation.login,
   },
 };
