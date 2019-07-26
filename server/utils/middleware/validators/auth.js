@@ -8,7 +8,6 @@ const signup = async (resolve, parent, args, context, info) => {
   };
   const validation = validator.signupRules(signupInput);
 
-  console.log('validation', validation);
   if (validation) {
     throw new Error(JSON.stringify(validation));
   }
