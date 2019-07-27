@@ -1,4 +1,4 @@
-endpoint: http://localhost:4477
+endpoint: https://connectms-service-27659883e0.herokuapp.com/connectms/dev
 datamodel: datamodel.prisma
 generate:
   - generator: javascript-client
