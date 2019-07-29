@@ -63,9 +63,10 @@ docker-compose up -d
 ```
 
 
-Once that is completed, deploy the prisma datamodel by running the following command:  
+Once that is completed, deploy the prisma datamodel by running the following commands:  
 
 ```
+cd server/database
 prisma deploy
 ```
 Prisma  is now connected to a local database and runs on `http://localhost:4477`
